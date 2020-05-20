@@ -15374,9 +15374,9 @@ var performanceNow =
 
 const debug$8 = Debug("dfu:noble");
 
-const DFU_BLE_WRITE_TIMEOUT =  100;
+const DFU_BLE_WRITE_TIMEOUT =  500;
 
-const DFU_BLE_GET_CHARACTERISTICS_TIMEOUT =  2000;
+const DFU_BLE_GET_CHARACTERISTICS_TIMEOUT =  3000;
 
 /**
  * noble DFU transport.
@@ -15411,10 +15411,14 @@ class DfuTransportNoble extends DfuTransportPrn {
 
     return new Promise((res, rej) => {
       setTimeout(() => {
-        this.dfuControlCharacteristic.write(bytesBuf, true, err => {
+        this.dfuControlCharacteristic.write(bytesBuf, false, err => {
           if (err) {
+            debug$8('WRITE ERRR');
+            debug$8(err);
+
             rej(err);
           } else {
+            debug$8('WRITE SUCCESS');
             res();
           }
         });

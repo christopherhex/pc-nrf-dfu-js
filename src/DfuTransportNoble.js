@@ -46,12 +46,12 @@ const debug = Debug("dfu:noble");
 
 const DFU_BLE_WRITE_TIMEOUT = process.env.DFU_BLE_WRITE_TIMEOUT
   ? parseInt(process.env.DFU_BLE_WRITE_TIMEOUT, 10)
-  : 100;
+  : 500;
 
 const DFU_BLE_GET_CHARACTERISTICS_TIMEOUT = process.env
   .DFU_BLE_GET_CHARACTERISTICS_TIMEOUT
   ? parseInt(process.env.DFU_BLE_GET_CHARACTERISTICS_TIMEOUT, 10)
-  : 2000;
+  : 3000;
 
 /**
  * noble DFU transport.
@@ -86,10 +86,14 @@ export default class DfuTransportNoble extends DfuTransportPrn {
 
     return new Promise((res, rej) => {
       setTimeout(() => {
-        this.dfuControlCharacteristic.write(bytesBuf, true, err => {
+        this.dfuControlCharacteristic.write(bytesBuf, false, err => {
           if (err) {
+            debug('WRITE ERRR');
+            debug(err);
+
             rej(err);
           } else {
+            debug('WRITE SUCCESS');
             res();
           }
         });

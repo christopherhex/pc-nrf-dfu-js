@@ -196,6 +196,7 @@ export const ExtendedErrorMessages = {
  */
 export class DfuError extends Error {
     constructor(code, message = undefined) {
+        debug(`DFU ERROR ${code} `);
         super();
         this.code = code;
         this.message = DfuError.getErrorMessage(code);
