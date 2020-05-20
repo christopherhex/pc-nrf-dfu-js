@@ -15411,7 +15411,9 @@ class DfuTransportNoble extends DfuTransportPrn {
 
     return new Promise((res, rej) => {
       setTimeout(() => {
-        this.dfuControlCharacteristic.write(bytesBuf, false, err => {
+        debug$8(" ctrl 3 --> ", bytesBuf);
+        const newBytesBuf = Buffer.from(bytesBuf);
+        this.dfuControlCharacteristic.write(newBytesBuf, false, err => {
           if (err) {
             rej(err);
           } else {
