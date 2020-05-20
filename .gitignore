@@ -2,7 +2,7 @@ node_modules
 yarn-error.log
 package-lock.json
 yarn.lock
-dist/
+# dist/
 *~
 .DS_Store
 .vscode
