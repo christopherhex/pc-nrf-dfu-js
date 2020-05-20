@@ -51,7 +51,7 @@ const DFU_BLE_WRITE_TIMEOUT = process.env.DFU_BLE_WRITE_TIMEOUT
 const DFU_BLE_GET_CHARACTERISTICS_TIMEOUT = process.env
   .DFU_BLE_GET_CHARACTERISTICS_TIMEOUT
   ? parseInt(process.env.DFU_BLE_GET_CHARACTERISTICS_TIMEOUT, 10)
-  : 500;
+  : 2000;
 
 /**
  * noble DFU transport.

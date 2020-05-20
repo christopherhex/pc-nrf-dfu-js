@@ -15376,7 +15376,7 @@ const debug$8 = Debug("dfu:noble");
 
 const DFU_BLE_WRITE_TIMEOUT =  100;
 
-const DFU_BLE_GET_CHARACTERISTICS_TIMEOUT =  500;
+const DFU_BLE_GET_CHARACTERISTICS_TIMEOUT =  2000;
 
 /**
  * noble DFU transport.
