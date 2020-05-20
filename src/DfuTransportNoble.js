@@ -86,9 +86,7 @@ export default class DfuTransportNoble extends DfuTransportPrn {
 
     return new Promise((res, rej) => {
       setTimeout(() => {
-        debug(" ctrl 3 --> ", bytesBuf);
-        const newBytesBuf = Buffer.from(bytesBuf);
-        this.dfuControlCharacteristic.write(newBytesBuf, true, err => {
+        this.dfuControlCharacteristic.write(bytesBuf, true, err => {
           if (err) {
             rej(err);
           } else {
