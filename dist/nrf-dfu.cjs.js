@@ -15501,16 +15501,16 @@ class DfuTransportNoble extends DfuTransportPrn {
       return this.readyPromise;
     }
 
-    this.readyPromise = Promise.race([
-      this.getCharacteristics(),
-      new Promise((res, rej) => {
+    this.readyPromise = 
+      (new Promise((res, rej) => {
         setTimeout(
           () =>
             rej(new DfuError(ErrorCode.ERROR_TIMEOUT_FETCHING_CHARACTERISTICS)),
           DFU_BLE_GET_CHARACTERISTICS_TIMEOUT
         );
-      })
-    ])
+
+        this.getCharacteristics().then(res).catch(rej);
+      }))
       .then(() => {
         // Subscribe to notifications on the control characteristic
         debug$8(
