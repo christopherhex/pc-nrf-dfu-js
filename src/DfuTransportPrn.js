@@ -204,6 +204,7 @@ export default class DfuTransportPrn extends DfuAbstractTransport {
         }
 
         debug(errorCode, errorStr);
+        console.log('STRANGE ERROR CODE HERE');
         return Promise.reject(new DfuError(errorCode, errorStr));
     }
 
@@ -230,6 +231,21 @@ export default class DfuTransportPrn extends DfuAbstractTransport {
             return bytes;
         };
     }
+
+    sendReceiptNotification(value = 0x00) {
+        debug(`sendReceiptNotification ${value}`);
+
+        return this.ready().then(() => (
+            this.writeCommand(new Uint8Array([
+                0x02, // "send Receipt Notification object" opcode
+                value,
+                0x00,
+            ]))
+                .then(this.read.bind(this))
+                .then(this.assertPacket(0x02, 0))
+        ));
+    }
+
 
     createObject(type, size) {
         debug(`CreateObject type ${type}, size ${size}`);

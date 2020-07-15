@@ -86,6 +86,16 @@ export default class DfuAbstractTransport {
         return this.sendPayload(0x02, bytes);
     }
 
+    wait(ms) {
+        debug(`Wait for  ${ms} milliseconds`);
+
+        return new Promise(res => {
+            setTimeout(() => {
+                res();
+            }, ms);
+        });
+    }
+
 
     // Sends either a init payload ("init packet"/"command object") or a data payload
     // ("firmware image"/"data objects")
@@ -140,8 +150,16 @@ export default class DfuAbstractTransport {
             }
             const end = Math.min(bytes.length, chunkSize);
 
-            return this.createObject(type, end)
-                .then(() => this.sendAndExecutePayloadChunk(type, bytes, 0, end, chunkSize));
+            if (type === 0x01) {
+                return this.createObject(type, end)
+                    .then(() => this.sendReceiptNotification())
+                    .then(() => this.sendAndExecutePayloadChunk(type, bytes, 0, end, chunkSize))
+                    .then(() => this.sendReceiptNotification());
+            } {
+                return this.createObject(type, end)
+                    .then(() => this.wait(800))
+                    .then(() => this.sendAndExecutePayloadChunk(type, bytes, 0, end, chunkSize));
+            }
         });
     }
 
@@ -230,6 +248,8 @@ export default class DfuAbstractTransport {
     // Must return a Promise
     // Actual implementation must be provided by concrete subclasses of DfuAbstractTransport.
     createObject(type, size) {}
+
+    sendReceiptNotification() {}
 
     // Fill the space previously allocated with createObject() with the given bytes.
     // Also receives the absolute offset and CRC32 so far, as some wire
